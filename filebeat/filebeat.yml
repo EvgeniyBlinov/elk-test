@@ -1,0 +1,18 @@
+#  vim: set et fenc=utf-8 ff=unix sts=2 sw=2 ts=2
+filebeat:
+  prospectors:
+    - paths:
+      - "/var/log/nginx/access.log"
+      document_type: nginx-access
+    - paths:
+      - "/var/log/nginx/error.log"
+      document_type: nginx-error
+output:
+  logstash:
+    hosts: ["logstash:5044"]
+    #tls:
+      #certificate_authorities:
+        #- /etc/pki/tls/certs/logstash-beats.crt
+      #timeout: 15
+  #file:
+    #path: "/tmp/filebeat"
