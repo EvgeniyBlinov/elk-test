@@ -24,8 +24,8 @@ elasticsearch:
     - ./elasticsearch/data:/usr/share/elasticsearch/data
 
 logstash:
-  #build: logstash
-  image: docker.elastic.co/logstash/logstash:6.1.1
+  build: logstash
+  #image: docker.elastic.co/logstash/logstash:6.1.1
   #restart: always
   log_opt:
     max-size: "10m"
