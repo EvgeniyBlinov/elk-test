@@ -1,29 +1,43 @@
 #  vim: set et fenc=utf-8 ff=unix sts=2 sw=2 ts=2
 elasticsearch:
-  image: elasticsearch:2.2
+  container_name: elasticsearch
+  image: docker.elastic.co/elasticsearch/elasticsearch:6.1.1
   #restart: always
   log_opt:
     max-size: "10m"
     max-file: "10"
+  ulimits:
+    nproc: 4096
+    nofile: 65536
+    memlock:
+      soft: -1
+      hard: -1
+  mem_limit: 1g
+  environment:
+    - cluster.name=docker-cluster
+    - bootstrap.memory_lock=true
+    - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
   ports:
     - 9200:9200
+    - 9300:9300
   volumes:
     - ./elasticsearch/data:/usr/share/elasticsearch/data
 
 logstash:
-  build: logstash
+  #build: logstash
+  image: docker.elastic.co/logstash/logstash:6.1.1
   #restart: always
   log_opt:
     max-size: "10m"
     max-file: "10"
-  command: logstash -f /config-dir/logstash.conf
+  #command: logstash -f /config-dir/logstash.conf
   ports:
     - 5044:5044
   links:
     - elasticsearch
 
 kibana:
-  image: kibana:4.4
+  image: docker.elastic.co/kibana/kibana:6.1.1
   #restart: always
   log_opt:
     max-size: "10m"
